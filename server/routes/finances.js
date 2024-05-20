@@ -2,7 +2,6 @@ const router = require("express").Router();
 const { Finance, validateFinance } = require("../models/finance");
 
 router.post("/", async (req, res) => {
-  console.log(req, res);
   try {
     const { error } = validateFinance(req.body);
     if (error)
@@ -20,7 +19,21 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const finances = await Finance.find();
+    let query = {};
+    const { start, end } = req.query;
+
+    if (start && start !== "null") {
+      query.date = { $gte: new Date(start) };
+    }
+
+    if (end && end !== "null") {
+      if (!query.date) {
+        query.date = {};
+      }
+      query.date.$lte = new Date(end);
+    }
+
+    const finances = await Finance.find(query);
     res.status(200).send(finances);
   } catch (error) {
     res.status(500).send({ message: "Internal Server Error" });

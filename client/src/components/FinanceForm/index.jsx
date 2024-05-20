@@ -26,12 +26,12 @@ const FinanceForm = () => {
     e.preventDefault();
     try {
       console.log(formData);
-      const response = await axios.post('http://localhost:8080/api/finances', formData);
+      await axios.post('http://localhost:8080/api/finances', formData);
       alert('Finance entry created successfully!');
       setFormData({
         date: new Date().toISOString().split('T')[0],
         type: 'income',
-        category: '',
+        category: 'Gifts',
         value: 0
       });
       setError('');
