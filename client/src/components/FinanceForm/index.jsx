@@ -31,7 +31,7 @@ const FinanceForm = () => {
           'x-auth-token': localStorage.getItem('token')
         }
       });
-      alert('Finance entry created successfully!');
+      notifyMe('Finance entry created successfully!');
       setFormData({
         date: new Date().toISOString().split('T')[0],
         type: 'income',
