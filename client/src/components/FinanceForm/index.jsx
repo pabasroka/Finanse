@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './styles.module.css';
+import {notifyMe} from '../../utils/notify';
 
 const FinanceForm = () => {
   const [formData, setFormData] = useState({
@@ -31,7 +32,7 @@ const FinanceForm = () => {
           'x-auth-token': localStorage.getItem('token')
         }
       });
-      notifyMe('Finance entry created successfully!');
+      notifyMe(`New finance entry added: ${formData.value} ${formData.type} in ${formData.category} on ${formData.date}`);
       setFormData({
         date: new Date().toISOString().split('T')[0],
         type: 'income',
@@ -43,26 +44,6 @@ const FinanceForm = () => {
       setError(err.response?.data?.message || 'An error occurred');
     }
   };
-  const notifyMe = () => {
-		if (!("Notification" in window)) {
-			// Check if the browser supports notifications
-			alert("This browser does not support desktop notification");
-		} else if (Notification.permission === "granted") {
-			// Check whether notification permissions have already been granted;
-			// if so, create a notification
-			const notification = new Notification("Hi there!");
-			// …
-		} else if (Notification.permission !== "denied") {
-			// We need to ask the user for permission
-			Notification.requestPermission().then((permission) => {
-				// If the user accepts, let's create a notification
-				if (permission === "granted") {
-					const notification = new Notification("Hi there!");
-					// …
-				}
-			});
-		}
-	}
   
   return (
     <div className={styles.formContainer}>
@@ -122,8 +103,7 @@ const FinanceForm = () => {
             required
           />
         </div>
-        <button type="submit"onClick={() => {
-				notifyMe()}} className={styles.submitButton}>Submit</button>
+        <button type="submit" className={styles.submitButton}>Submit</button>
       </form>
     </div>
   );

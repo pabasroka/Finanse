@@ -32,7 +32,6 @@ const Reports = () => {
 
   const handleTypeChange = (event) => {
     setType(event.target.value.toLowerCase());
-    console.log(event.target.value.toLowerCase())
   };
 
   useEffect(() => {

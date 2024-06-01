@@ -21,7 +21,6 @@ const isLocalhost = Boolean(
 );
 
 export function register(config) {
-  console.log("register");
   if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
@@ -187,19 +186,3 @@ export function unregister() {
       });
   }
 }
-// // eslint-disable-next-line no-restricted-globals
-// self.addEventListener("push", (event) => {
-//   const data = event.data.json();
-//   // eslint-disable-next-line no-restricted-globals
-//   self.registration.showNotification(data.title, {
-//     body: data.body,
-//     icon: data.icon,
-//     // Optionally, you can include other notification options here
-//   });
-// });
-
-// // eslint-disable-next-line no-restricted-globals
-// self.addEventListener("notificationclick", (event) => {
-//   event.notification.close();
-//   // Add logic here to handle notification click event
-// });

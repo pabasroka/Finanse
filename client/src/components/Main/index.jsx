@@ -7,9 +7,6 @@ const Main = () => {
 
 	return (
 		<div className={styles.main}>
-			{/* <button onClick={() => {
-				notifyMe()
-			}}>Notify me!</button> */}
 			<FinanceForm />
 		</div>
 	);
