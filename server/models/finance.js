@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 
 const financeSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
   date: { type: Date, required: true },
   type: { type: String, enum: ["income", "outcome"], required: true },
   category: {
@@ -25,6 +30,7 @@ const Finance = mongoose.model("finance", financeSchema);
 
 const validateFinance = (data) => {
   const schema = Joi.object({
+    userId: Joi.string().required(),
     date: Joi.date().required().label("Date"),
     type: Joi.string().valid("income", "outcome").required().label("Type"),
     category: Joi.string()

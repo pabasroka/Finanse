@@ -1,13 +1,15 @@
 const router = require("express").Router();
 const { Finance, validateFinance } = require("../models/finance");
+const auth = require("../middleware/auth");
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   try {
-    const { error } = validateFinance(req.body);
+    const model = { ...req.body, userId: req.user._id };
+    const { error } = validateFinance(model);
     if (error)
       return res.status(400).send({ message: error.details[0].message });
 
-    const finance = new Finance(req.body);
+    const finance = new Finance(model);
     await finance.save();
     res
       .status(201)
@@ -17,9 +19,9 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
-    let query = {};
+    let query = { userId: req.user._id };
     const { start, end } = req.query;
 
     if (start && start !== "null") {
@@ -40,7 +42,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
   try {
     const finance = await Finance.findById(req.params.id);
     if (!finance)
@@ -52,7 +54,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   try {
     const { error } = validateFinance(req.body);
     if (error)
@@ -72,7 +74,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   try {
     const finance = await Finance.findByIdAndRemove(req.params.id);
     if (!finance)

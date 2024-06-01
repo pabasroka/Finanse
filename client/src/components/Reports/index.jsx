@@ -9,8 +9,14 @@ const Reports = () => {
   const [data, setData] = useState([]);
 
   const fetchData = useCallback(async () => {
+    const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:8080/api/finances?start=${startDate}&end=${endDate}`);
+      const response = await fetch(`http://localhost:8080/api/finances?start=${startDate}&end=${endDate}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token
+        },
+      });
       const data = await response.json();
       setData(data);
     } catch (error) {

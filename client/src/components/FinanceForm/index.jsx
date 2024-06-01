@@ -25,8 +25,12 @@ const FinanceForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(formData);
-      await axios.post('http://localhost:8080/api/finances', formData);
+      await axios.post('http://localhost:8080/api/finances', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': localStorage.getItem('token')
+        }
+      });
       alert('Finance entry created successfully!');
       setFormData({
         date: new Date().toISOString().split('T')[0],
