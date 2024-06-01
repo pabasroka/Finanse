@@ -3,6 +3,7 @@ import FinanceForm from "../FinanceForm";
 
 const Main = () => {
 
+	
 
 	return (
 		<div className={styles.main}>

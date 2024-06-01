@@ -22,7 +22,7 @@ router.post("/", auth, async (req, res) => {
 router.get("/", auth, async (req, res) => {
   try {
     let query = { userId: req.user._id };
-    const { start, end } = req.query;
+    const { start, end , type} = req.query;
 
     if (start && start !== "null") {
       query.date = { $gte: new Date(start) };
@@ -33,6 +33,13 @@ router.get("/", auth, async (req, res) => {
         query.date = {};
       }
       query.date.$lte = new Date(end);
+    }
+
+    if(type && type !== "null"){
+      if(!query.type){
+        query.type = {};
+      }
+      query.type = type;
     }
 
     const finances = await Finance.find(query);

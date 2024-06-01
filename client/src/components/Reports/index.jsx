@@ -7,11 +7,12 @@ const Reports = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [data, setData] = useState([]);
+  const [type, setType] = useState(null);
 
   const fetchData = useCallback(async () => {
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:8080/api/finances?start=${startDate}&end=${endDate}`, {
+      const response = await fetch(`http://localhost:8080/api/finances?start=${startDate}&end=${endDate}&type=${type}`, {
         headers: {
           "Content-Type": "application/json",
           "x-auth-token": token
@@ -22,23 +23,41 @@ const Reports = () => {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate, type]);
 
   const handleDateChange = (start, end) => {
     setStartDate(start);
     setEndDate(end);
   };
 
+  const handleTypeChange = (event) => {
+    setType(event.target.value.toLowerCase());
+  };
+
   useEffect(() => {
     fetchData();
-  }, [startDate, endDate, fetchData]);
+  }, [startDate, endDate, type, fetchData]);
 
-	return (
-		<div className={styles.main}>
-			<DateRangePicker onChange={handleDateChange} />
+  return (
+    <div className={styles.main}>
+      <DateRangePicker onChange={handleDateChange} />
+      <div>
+        <label htmlFor="type">Type:</label>
+        <select
+          id="type"
+          name="type"
+          value={type}
+          onChange={handleTypeChange}
+          required
+        >
+          <option value="null">All</option>
+          <option value="income">Income</option>
+          <option value="outcome">Outcome</option>
+        </select>
+      </div>
       <List data={data} />
-		</div>
-	);
+    </div>
+  );
 };
 
 export default Reports;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './styles.module.css';
+import {notifyMe} from '../../utils/notify';
 
 const FinanceForm = () => {
   const [formData, setFormData] = useState({
@@ -31,7 +32,7 @@ const FinanceForm = () => {
           'x-auth-token': localStorage.getItem('token')
         }
       });
-      alert('Finance entry created successfully!');
+      notifyMe(`New finance entry added: ${formData.value} ${formData.type} in ${formData.category} on ${formData.date}`);
       setFormData({
         date: new Date().toISOString().split('T')[0],
         type: 'income',
@@ -43,7 +44,7 @@ const FinanceForm = () => {
       setError(err.response?.data?.message || 'An error occurred');
     }
   };
-
+  
   return (
     <div className={styles.formContainer}>
       <h2>Create Finance Entry</h2>
